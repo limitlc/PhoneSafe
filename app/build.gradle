@@ -9,7 +9,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.1.1"
     }
     buildTypes {
         release {
@@ -24,4 +24,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/umeng-analytics-v5.6.3.jar')
+    compile files('libs/umeng-update-v2.6.0.1.jar')
 }

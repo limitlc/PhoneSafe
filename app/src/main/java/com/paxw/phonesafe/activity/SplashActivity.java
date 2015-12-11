@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.paxw.phonesafe.myapplication.R;
 import com.paxw.phonesafe.utils.ToastUtil;
+import com.umeng.update.UmengUpdateAgent;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,10 +22,15 @@ public class SplashActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
 
     protected void initView() {
+        //友盟的更新配置是否正确的的配置
+        UmengUpdateAgent.setUpdateAutoPopup(false);
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
         setContentView(R.layout.activity_first);
         image = (ImageView) findViewById(R.id.splash_image_view);
         version = (TextView) findViewById(R.id.version_text);
@@ -54,7 +60,8 @@ public class SplashActivity extends BaseActivity{
         PackageManager pm = getPackageManager();
         try {
             PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-            return packageInfo.versionName;
+           return packageInfo.versionCode+"";
+//            return packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return "";
