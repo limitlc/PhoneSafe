@@ -39,4 +39,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/umeng-analytics-v5.6.3.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
+    compile files('libs/butterknife-7.0.1.jar')
 }
