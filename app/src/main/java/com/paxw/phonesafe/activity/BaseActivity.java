@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.umeng.analytics.MobclickAgent;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by lichuang on 2015/12/11.
  */
@@ -15,6 +17,7 @@ public abstract class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
         initView();
     }
 

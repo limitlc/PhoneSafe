@@ -111,6 +111,7 @@ public class SplashActivity extends BaseActivity{
         //// TODO: 2015/12/14  tiaozhuan
         ToastUtil.showToast("马上就要跳转了啊");
         Intent intent = new Intent(this,MainActivity.class);
+//        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

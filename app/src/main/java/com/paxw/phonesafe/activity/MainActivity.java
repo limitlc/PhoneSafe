@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paxw.phonesafe.im.activity.LoginActivity;
 import com.paxw.phonesafe.myapplication.R;
 import com.paxw.phonesafe.utils.Constants;
 import com.paxw.phonesafe.utils.MD5Util;
@@ -35,11 +36,11 @@ public class MainActivity extends BaseActivity {
     private GridView gv_home;
     private SharedPreferences sp;
     private static final String[] names = {"手机防盗", "通讯卫士", "软件管理", "进程管理",
-            "流量统计", "手机杀毒", "缓存清理", "高级工具", "设置中心"};
-    private static final int[] icons = {R.mipmap.safe,
-            R.mipmap.callmsgsafe, R.mipmap.app, R.mipmap.taskmanager,
-            R.mipmap.netmanager, R.mipmap.trojan, R.mipmap.sysoptimize,
-            R.mipmap.atools, R.mipmap.settings};
+            "哈哈聊天", "手机杀毒", "缓存清理", "高级工具", "设置中心"};
+    private static final int[] icons = {
+            R.mipmap.safe, R.mipmap.callmsgsafe, R.mipmap.app,
+            R.mipmap.taskmanager, R.mipmap.netmanager, R.mipmap.trojan,
+            R.mipmap.sysoptimize, R.mipmap.atools, R.mipmap.settings};
 
     private AlertDialog dialog = null;
 
@@ -63,12 +64,16 @@ public class MainActivity extends BaseActivity {
                         showLostFindDialog();
                         break;
                     case 1:
+                        intent = new Intent(MainActivity.this ,CallSmsSafeActivity.class);
+                        startActivity(intent);
                         break;
                     case 2:
                         break;
                     case 3:
                         break;
                     case 4:
+                        intent.setClass(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
                         break;
                     case 5:
                         break;
