@@ -5,7 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ import com.paxw.phonesafe.adapter.CallSmsSafeAdapter;
 import com.paxw.phonesafe.bean.ContactsInfo;
 import com.paxw.phonesafe.dao.NotSafeNumberDao;
 import com.paxw.phonesafe.myapplication.R;
+import com.paxw.phonesafe.utils.Logs;
 import com.paxw.phonesafe.utils.ToastUtil;
 
 import java.util.List;
@@ -54,6 +57,7 @@ public class CallSmsSafeActivity extends BaseActivity implements AbsListView.OnS
         llLoading = (LinearLayout) findViewById(R.id.ll_loading);
         dao = new NotSafeNumberDao(this);
         adapter = new CallSmsSafeAdapter(this ,this);
+        lvCallSmsSafe.setAdapter(adapter);
         total = dao.getTotalCount();
         lvCallSmsSafe.setOnScrollListener(this);
         fillData();
@@ -65,7 +69,11 @@ public class CallSmsSafeActivity extends BaseActivity implements AbsListView.OnS
         new Thread() {
             @Override
             public void run() {
+                Logs.e();
                 list = dao.findAll();
+                for (ContactsInfo info:list) {
+                    Logs.e(info.toString());
+                }
                 //模拟查询时间
                 handler.sendEmptyMessageDelayed(0,1000);
             }
@@ -164,4 +172,29 @@ public class CallSmsSafeActivity extends BaseActivity implements AbsListView.OnS
         });
         dialog.show();
     }
+
+    class  MyAdapter extends BaseAdapter{
+
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
+    }
+
 }

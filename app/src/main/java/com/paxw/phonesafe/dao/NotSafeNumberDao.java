@@ -24,32 +24,33 @@ public class NotSafeNumberDao {
     }
 
     public void add(String number, String mode) {
+
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.beginTransaction();
+
         ContentValues values = new ContentValues();
         values.put(Constants.DBPNUMBER, number);
         values.put(Constants.DBPMODE, mode);
         database.insert(Constants.DBTBLACKNUMBER, null, values);
-        database.endTransaction();
+
         database.close();
     }
 
     public void delete(String number) {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.beginTransaction();
+
         database.delete(Constants.DBTBLACKNUMBER, "number = ?", new String[]{number});
-        database.endTransaction();
+
         database.close();
 
     }
 
     public void update(String number, String mode) {
         SQLiteDatabase database = helper.getWritableDatabase();
-        database.beginTransaction();
+
         ContentValues values = new ContentValues();
         values.put(Constants.DBPMODE, mode);
         database.update(Constants.DBTBLACKNUMBER, values, "number = ?", new String[]{number});
-        database.endTransaction();
+
         database.close();
 
     }
@@ -65,6 +66,7 @@ public class NotSafeNumberDao {
             info.setNumber(cursor.getString(0));
             info.setMode(cursor.getString(1));
             list.add(info);
+
         }
         cursor.close();
         database.close();

@@ -10,25 +10,32 @@ import android.widget.TextView;
 import com.paxw.phonesafe.bean.ContactsInfo;
 import com.paxw.phonesafe.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by lichuang on 2015/12/17.
  */
 public class CallSmsSafeAdapter extends BaseAdapter {
-    private List<ContactsInfo> list;
+    private List<ContactsInfo> list = new ArrayList<>();
     private Context mContext;
     public CallSmsSafeAdapter(Context context,ItemDeleteClicked listener){
         this.mContext  = context;
         this.listener = listener;
     }
     public void  setData(List<ContactsInfo> list){
-        this.list = list;
+
+            this.list = list;
+
+
+
     }
     @Override
     public int getCount() {
-        if (null == list)return 0;
+
+
         return list.size();
+
     }
 
     @Override
@@ -44,15 +51,17 @@ public class CallSmsSafeAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+        View view = null;
         if (null == convertView){
             holder = new ViewHolder();
-            convertView = View.inflate(mContext, R.layout.list_callsmssafe_item,null);
-            holder.iv_delete = (ImageView) convertView.findViewById(R.id.iv_delete);
-            holder.tv_mode = (TextView) convertView.findViewById(R.id.tv_mode);
-            holder.tv_number = (TextView) convertView.findViewById(R.id.tv_number);
-            convertView.setTag(holder);
+            view = View.inflate(mContext, R.layout.list_callsmssafe_item,null);
+            holder.iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+            holder.tv_mode = (TextView) view.findViewById(R.id.tv_mode);
+            holder.tv_number = (TextView) view.findViewById(R.id.tv_number);
+            view.setTag(holder);
         }else{
-            holder = (ViewHolder) convertView.getTag();
+            view = convertView;
+            holder = (ViewHolder) view.getTag();
         }
         holder.tv_number.setText(list.get(position).getNumber());
         String mode = list.get(position).getMode();
@@ -73,7 +82,7 @@ public class CallSmsSafeAdapter extends BaseAdapter {
                }
            }
        });
-        return convertView;
+        return view;
     }
     class ViewHolder {
         TextView tv_number;
@@ -85,4 +94,6 @@ public class CallSmsSafeAdapter extends BaseAdapter {
     public interface ItemDeleteClicked{
         public void clickedDelete(int position );
     }
+
+
 }
