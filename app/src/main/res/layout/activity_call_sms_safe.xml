@@ -3,11 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <com.paxw.phonesafe.view.MyView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="几天不见了的房间爱疯了跨世纪的弗兰克军都山路况顺口溜减肥了看见四路口附近的交路口就付款了双节棍路况军都山发给是分都看见过路口附近路口时髋关节讽德诵功"
-        />
 
     <RelativeLayout
         android:layout_width="fill_parent"
