@@ -3,24 +3,36 @@ package com.paxw.phonesafe.activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.format.Formatter;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paxw.phonesafe.myapplication.R;
+import com.paxw.phonesafe.utils.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppManagerActivity extends BaseActivity {
+public class AppManagerActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tv_avail_rom;
     private TextView tv_avail_sd;
@@ -42,9 +54,65 @@ public class AppManagerActivity extends BaseActivity {
         tv_status = (TextView) findViewById(R.id.tv_status);
         list = getAppFromPhone();
         lv_appmanager.setAdapter(new AppAdapter());
+        lv_appmanager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object obj = lv_appmanager.getItemAtPosition(position);
+                if (null != obj){
+                    dismissPopupWindow();
+                    View contentView = View.inflate(getApplicationContext(),
+                            R.layout.popup_item, null);
+                     ll_uninstall = (LinearLayout) contentView
+                            .findViewById(R.id.ll_uninstall);
+                   ll_start = (LinearLayout) contentView
+                            .findViewById(R.id.ll_start);
+                     ll_share = (LinearLayout) contentView
+                            .findViewById(R.id.ll_share);
+                    ll_share.setOnClickListener(AppManagerActivity.this);
+                    ll_start.setOnClickListener(AppManagerActivity.this);
+                    ll_uninstall.setOnClickListener(AppManagerActivity.this);
+                    popupWindow = new PopupWindow(contentView,
+                           LayoutParams.WRAP_CONTENT,
+                           LayoutParams.WRAP_CONTENT);
+                    //必须要有背景 没有背景是什么情况啊
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    //获取点击的item的位置
+                    int[] loc = new int[2];
+                    view.getLocationInWindow(loc);
+                    int px = DensityUtil.dip2px(AppManagerActivity.this,60);
+                    popupWindow.showAtLocation(parent, Gravity.TOP+Gravity.LEFT,px,loc[1]);
+                    AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
+                    aa.setDuration(200);
+                    ScaleAnimation sa = new ScaleAnimation(0.5f, 1.0f, 0.5f,
+                            1.0f, Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0.5f);
+                    sa.setDuration(200);
+                    AnimationSet set = new AnimationSet(false);
+                    set.addAnimation(sa);
+                    set.addAnimation(aa);
+                    contentView.startAnimation(set);
+
+                }
+
+            }
+        });
 
 
     }
+
+    private LinearLayout ll_start;
+    private LinearLayout ll_share;
+    private LinearLayout ll_uninstall;
+    private PopupWindow popupWindow;
+    private void dismissPopupWindow(){
+        if (null!=popupWindow){
+            if (popupWindow.isShowing())
+            popupWindow.dismiss();
+            popupWindow = null;
+        }
+    }
+
+
     private String getTotalSpace(String path){
         StatFs stat = new StatFs(path);
         long blockSizeLong = stat.getBlockSize();
@@ -88,6 +156,12 @@ public class AppManagerActivity extends BaseActivity {
         }
         return list;
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
     class AppInfo{
         private String name;
         private boolean isSystemApp;
@@ -147,6 +221,7 @@ public class AppManagerActivity extends BaseActivity {
 
         @Override
         public Object getItem(int position) {
+
             return null == list? null:list.get(position);
         }
 
