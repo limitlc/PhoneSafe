@@ -1,11 +1,13 @@
 package com.paxw.phonesafe.activity;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.format.Formatter;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 import com.paxw.phonesafe.myapplication.R;
 import com.paxw.phonesafe.utils.DensityUtil;
+import com.paxw.phonesafe.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
     private TextView tv_avail_sd;
     private ListView lv_appmanager;
     private TextView tv_status;
+    private AppInfo checkInfo;
 
 
     protected void initView() {
@@ -59,6 +63,7 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object obj = lv_appmanager.getItemAtPosition(position);
                 if (null != obj){
+                    checkInfo = (AppInfo) obj;
                     dismissPopupWindow();
                     View contentView = View.inflate(getApplicationContext(),
                             R.layout.popup_item, null);
@@ -156,10 +161,41 @@ public class AppManagerActivity extends BaseActivity implements View.OnClickList
         }
         return list;
     }
-
+    private void uninstall() {
+        if (!checkInfo.isSystemApp()) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_DELETE);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(Uri.parse("package:" + checkInfo.getPackageName()));
+            startActivityForResult(intent, 0);
+        } else {
+            ToastUtil.showToast("可能需要root权限才能卸载");
+        }
+    }
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_uninstall:
+                //卸载的操作
+               uninstall();
+                break;
+            case R.id.ll_start:
+                //开启的操作
 
+                break;
+            case R.id.ll_share:
+                // TODO: 2015/12/22 分享的操作
+                break;
+
+
+
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getAppFromPhone();
+        ((AppAdapter)lv_appmanager.getAdapter()).notifyDataSetChanged();
     }
 
     class AppInfo{
